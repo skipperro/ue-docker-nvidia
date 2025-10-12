@@ -1,27 +1,28 @@
 # ue-docker-nvidia
-Run Windows Unreal Engine applications inside a Linux docker container using NVIDIA GPU.
+Run **Windows Unreal Engine** apps inside a **Linux** Docker container with full **NVIDIA GPU** acceleration — and stream them in your **web browser** via Selkies-GStreamer.
 
 > [!CAUTION]
 > This is just a proof of concept and work in progress piece of code. It works on my machine and with my application.
 >
-> Your milage may vary. **Run at your own risk** ❗
+> Your milage may vary. **Run at your own risk** ⚠️
 
-## Features
+![Lyra running in browser from docker container](images/ue5-lyra-linux.jpg)
+UE 5 Lyra running in browser from docker container
+
+
+## ✨ Features
 - Supports **DirectX 11 and 12** applications with output to Vulkan.
-- **noVNC** server included.
+- Based on **nvidia-egl** Linux image with KDE desktop.
+- **Selkies-Gstreamer** for remote access **via web-browser** with Pixelstreaming-like performance.
+- **Wineprefix** with VC++ libraries, fonts, codecs and ann NVIDIA components.
 - **MangoHud** included.
 
-## Specs
-- **Wine** 9.0
-- **DXVK** 1.10.3
-- **VKD3D** 2.8
-
-## Instructions
-### System requirements
+## ✅ System requirements
 - NVIDIA GPU with drivers **535.xx** or newer.
 - Linux Kernel **5.x** or newer.
 - Internet connection.
 
+## 🔧 Instructions
 ### Install docker
 Installation script is available at https://get.docker.com/
 ```
@@ -46,37 +47,34 @@ git clone https://github.com/Skipperro/ue-docker-nvidia.git
 cd ue-docker-nvidia
 ```
 ### Build image
-> [!NOTE]
-> Because building wineprefix to run Unreal Engine applications requires GUI, thus it's not running well on systems without desktop environment, as part of the image building the already **prepared wineprefix will be downloaded** from Dropbox (625 MB)
-> 
-> If you would like to build wineprefix yourself, you will find instructions [on the bottom](#building-custom-wineprefix) on this page.
+
 ```
 sudo sh build.sh
 ```
 
 ### Copy your application to app directory
-Copy the whole UE application to the `app` directory. No zip files - It must be extracted.
+Copy the whole UE application to the `app` directory. **No zip files** - It must be extracted.
 
 The included script will find the proper executable automatically, as long as there is just one .exe file in `Project/Binaries/Win64` directory.
 
 You can even have spaces in project name, but for now only one app can be present in the app directory.
 
+### Create wineprefix
+> [!NOTE]
+> Because building wineprefix to run Unreal Engine applications requires GUI (to display popups from various setup.exe files), it's impossible to do it as part of the image building. 
+> 
+> To work around this issue you can use create_wineprefix.sh script to create it on your GUI-capable Linux workstation or **just skip this step** and wineprefix will be created during the first run of your application. It will take a few minutes.
+
+## 🚀 Usage
 ### Run the application
 ```
 sudo sh run.sh [optional parameters to pass to UE application]
 ```
 
-### Check if it's running using VNC
-Just visit http://localhost:5678/
+### Check if it's running using Selkies-Gstreamer
+Just visit http://localhost:8080/
 
 Replace `localhost` with IP if you are testing from different device.
 
-While running via VNC or pixelstreaming use **Shift+F12** to bring up MangoHud with performance statistics.
+While running use **Shift+F12** to bring up MangoHud with performance statistics.
 
-## Building custom wineprefix
-If you want to build your own wineprefix instead of downloading mine, here is what is required:
-- Mono installed (popup should show automatically on first run)
-- Visual C++ Redsitributables 2022 (winetricks vcrun2022). This works only in desktop environment.
-- Core Fonts installed (winetricks corefonts). This can take few minutes.
-- DXVK 1.10.3 (winedricks dxvk1103). Newer version might work, but might also cause conflicts with VKD3D.
-- VKD3D 2.8. Please download from GitHub. Since version 2.9 file structure is different and may cause issues with running UE apps.

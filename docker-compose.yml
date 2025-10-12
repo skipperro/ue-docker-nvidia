@@ -1,36 +1,51 @@
 services:
   ue-docker-nvidia:
+    container_name: ue-docker-nvidia
     build: .
     image: ue-docker-nvidia
     network_mode: "host"
-    container_name: ue-docker-nvidia
     environment:
-      WINEPREFIX: "/wineprefix"
-      NVIDIA_DISABLE_REQUIRE: "1"
-      NVIDIA_DRIVER_CAPABILITIES: all
-      DISPLAY: :1
-      WINEDEBUG: "-all"
-      RUN_ARGS: "${RUN_ARGS}"
-      MANGOHUD: 1
-    devices:
-      - /dev/dri:/dev/dri
-      - /dev/snd:/dev/snd
+    # Unreal Engine launcher with start parameters
+    - RUN_ARGS=${RUN_ARGS}
+    # Fix for proper NVIDIA driver version detection
+    - DXVK_ENABLE_NVAPI=1
+    # Selkies-Gstreamer    
+    - TZ=UTC
+    - DISPLAY_SIZEW=1920
+    - DISPLAY_SIZEH=1080
+    - DISPLAY_REFRESH=60
+    - DISPLAY_DPI=96
+    - DISPLAY_CDEPTH=24
+    - PASSWD=mypasswd
+    - SELKIES_ENCODER=nvh264enc
+    - SELKIES_ENABLE_RESIZE=false
+    - SELKIES_VIDEO_BITRATE=20000 # 20 Mbps
+    - SELKIES_FRAMERATE=60
+    - SELKIES_AUDIO_BITRATE=128000
+    - SELKIES_ENABLE_BASIC_AUTH=false
+    - SELKIES_ENABLE_HTTPS=false
+    # General defaults
+    - NVIDIA_VISIBLE_DEVICES=all
+    - NVIDIA_DRIVER_CAPABILITIES=all
+    ports:
+      - "8080:8080" # Selkies
+    tmpfs:
+      - '/dev/shm:rw'
+    stdin_open: true
+    tty: true
     volumes:
-      - /etc/vulkan/icd.d/nvidia_icd.json:/etc/vulkan/icd.d/nvidia_icd.json
-      - /etc/vulkan/implicit_layer.d/nvidia_layers.json:/etc/vulkan/implicit_layer.d/nvidia_layers.json
-      - /usr/share/glvnd/egl_vendor.d/10_nvidia.json:/usr/share/glvnd/egl_vendor.d/10_nvidia.json
       - ./app:/app:ro
-    logging:
-      driver: "json-file"
-      options:
-        max-size: "50m"
+      - ./wineprefix:/home/ubuntu/wineprefix
+      - ./appdata:/home/ubuntu/wineprefix/drive_c/users/ubuntu/AppData
     deploy:
       resources:
         reservations:
           devices:
-            - driver: nvidia
-              count: all
-              capabilities: [gpu]
+          - driver: nvidia
+            count: 1
+            capabilities: [gpu]
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "50m"
 
-
-# wine /app/Arcware_Template/Binaries/Win64/Arcware_Template.exe -dx11 -PixelStreamingURL=ws://signalling-stream.ragnarok.arcware.cloud:80/?df-87e9dbd2-213e-4257-af4c-271649e78536 -PixelStreamingEncoderCodec=VP9 -PixelStreamingEncoderMaxBitrate=16000000 -PixelStreamingWebRTCMaxBitrate=16000000

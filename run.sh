@@ -1,2 +1,2 @@
-RUN_ARGS="$@" docker compose up
+RUN_ARGS="$@" docker compose up --build
 
