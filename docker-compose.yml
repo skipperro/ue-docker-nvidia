@@ -35,8 +35,7 @@ services:
     tty: true
     volumes:
       - ./app:/app:ro
-      - ./wineprefix:/home/ubuntu/wineprefix
-      - ./appdata:/home/ubuntu/wineprefix/drive_c/users/ubuntu/AppData
+      - wineprefix-data:/home/ubuntu/wineprefix
     deploy:
       resources:
         reservations:
@@ -49,3 +48,5 @@ services:
       options:
         max-size: "50m"
 
+volumes:
+  wineprefix-data:
