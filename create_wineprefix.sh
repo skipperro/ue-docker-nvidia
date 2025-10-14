@@ -19,5 +19,6 @@ winetricks -f -q dxvk
 winetricks -f -q dxvk_nvapi0061
 winetricks -f -q vkd3d
 
-
+# Install nvidia libraries
+/home/ubuntu/nvidia/setup_nvlibs.sh install
 

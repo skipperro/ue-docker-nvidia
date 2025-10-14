@@ -9,6 +9,7 @@ services:
     - RUN_ARGS=${RUN_ARGS}
     # Fix for proper NVIDIA driver version detection
     - DXVK_ENABLE_NVAPI=1
+    - WINEDEBUG=-all,+nvcuvid,+nvencodeapi-all
     # Selkies-Gstreamer    
     - TZ=UTC
     - DISPLAY_SIZEW=1920
@@ -26,7 +27,7 @@ services:
     - SELKIES_ENABLE_HTTPS=false
     # General defaults
     - NVIDIA_VISIBLE_DEVICES=all
-    - NVIDIA_DRIVER_CAPABILITIES=all
+    - NVIDIA_DRIVER_CAPABILITIES=all,video,compute,utility
     ports:
       - "8080:8080" # Selkies
     tmpfs:
@@ -41,7 +42,6 @@ services:
         reservations:
           devices:
           - driver: nvidia
-            count: 1
             capabilities: [gpu]
     logging:
       driver: "json-file"

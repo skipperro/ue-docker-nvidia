@@ -26,6 +26,15 @@ RUN sudo apt autoremove -y
 # Copy MangoHud config
 COPY mangohud/MangoHud.conf /home/ubuntu/.config/MangoHud/MangoHud.conf
 
+# Copy nvidia libraries for wine
+COPY --chown=1000:1000 nvidia /home/ubuntu/nvidia
+RUN sudo chmod +x /home/ubuntu/nvidia/setup_nvlibs.sh
+
+# Set permissions for wineprefix
+RUN mkdir /home/ubuntu/wineprefix
+RUN chown -R 1000:1000 /home/ubuntu/wineprefix
+RUN rm -rf /home/ubuntu/wineprefix/*
+
 # Entrypoint
 COPY --chown=1000:1000 entrypoint.sh /entrypoint.sh
 COPY --chown=1000:1000 run_app.sh /run_app.sh
