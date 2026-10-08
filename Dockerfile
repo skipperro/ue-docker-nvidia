@@ -27,7 +27,7 @@ RUN sudo apt autoremove -y
 COPY mangohud/MangoHud.conf /home/ubuntu/.config/MangoHud/MangoHud.conf
 
 # Copy nvidia libraries for wine
-COPY --chown=1000:1000 nvidia /home/ubuntu/nvidia
+COPY --chown=1000:1000 nvidia/nvidia-libs-v1.0.2/ /home/ubuntu/nvidia
 RUN sudo chmod +x /home/ubuntu/nvidia/setup_nvlibs.sh
 
 # Set permissions for wineprefix
