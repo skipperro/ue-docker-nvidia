@@ -2,8 +2,8 @@
 
 # Get NVIDIA libraries
 
-URL="https://github.com/SveSop/nvidia-libs/releases/download/v0.8.5/nvidia-libs-v0.8.5.tar.xz"
-ARCHIVE="$(basename "$URL")"   # nvidia-libs-v0.8.5.tar.xz
+URL="https://github.com/SveSop/nvidia-libs/releases/download/v1.0.2/nvidia-libs-v1.0.2.tar.xz"
+ARCHIVE="$(basename "$URL")"   # nvidia-libs-v1.0.2.tar.xz
 DEST_DIR="nvidia"
 
 # Skip if destination already exists
