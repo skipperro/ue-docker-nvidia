@@ -10,7 +10,8 @@ services:
     # Fix for proper NVIDIA driver version detection
     - DXVK_ENABLE_NVAPI=1
     - WINEDEBUG=-all,+nvcuvid,+nvencodeapi-all
-    # Selkies-Gstreamer    
+    # Selkies-Gstreamer 
+    - WM_ONLY=false
     - TZ=UTC
     - DISPLAY_SIZEW=1920
     - DISPLAY_SIZEH=1080
