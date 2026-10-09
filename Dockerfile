@@ -1,5 +1,5 @@
 # Latest Ubuntu LTS
-FROM ghcr.io/selkies-project/nvidia-egl-desktop:24.04-20251011075504
+FROM ghcr.io/selkies-project/nvidia-egl-desktop:24.04
 
 ARG DEBIAN_FRONTEND=noninteractive
 
