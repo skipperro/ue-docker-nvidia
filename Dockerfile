@@ -1,5 +1,5 @@
 # Latest Ubuntu LTS
-FROM ghcr.io/selkies-project/nvidia-egl-desktop:24.04
+FROM ghcr.io/selkies-project/selkies-egl-desktop:26.04
 
 ARG DEBIAN_FRONTEND=noninteractive
 
@@ -36,18 +36,18 @@ RUN chown -R 1000:1000 /home/ubuntu/wineprefix
 RUN rm -rf /home/ubuntu/wineprefix/*
 
 # Selkies Tweaks
-COPY selkies-tweaks/python/__main__.py /usr/local/lib/python3.12/dist-packages/selkies_gstreamer/__main__.py
-COPY selkies-tweaks/python/signalling_web.py /usr/local/lib/python3.12/dist-packages/selkies_gstreamer/signalling_web.py
-COPY selkies-tweaks/web/app.js /opt/gst-web/app.js
-COPY --chown=1000:1000 selkies-tweaks/entrypoint.sh /etc/entrypoint.sh
-RUN chmod -f 755 /etc/entrypoint.sh
+#COPY selkies-tweaks/python/__main__.py /usr/local/lib/python3.12/dist-packages/selkies_gstreamer/__main__.py
+#COPY selkies-tweaks/python/signalling_web.py /usr/local/lib/python3.12/dist-packages/selkies_gstreamer/signalling_web.py
+#COPY selkies-tweaks/web/app.js /opt/gst-web/app.js
+#COPY --chown=1000:1000 selkies-tweaks/entrypoint.sh /etc/entrypoint.sh
+#RUN chmod -f 755 /etc/entrypoint.sh
 
 # Entrypoint
-COPY --chown=1000:1000 entrypoint.sh /entrypoint.sh
-COPY --chown=1000:1000 run_app.sh /run_app.sh
-COPY --chown=1000:1000 create_wineprefix.sh /home/ubuntu/create_wineprefix.sh
-RUN sudo chmod +x /entrypoint.sh
-RUN sudo chmod +x /run_app.sh
+#COPY --chown=1000:1000 entrypoint.sh /entrypoint.sh
+#COPY --chown=1000:1000 run_app.sh /run_app.sh
+#COPY --chown=1000:1000 create_wineprefix.sh /home/ubuntu/create_wineprefix.sh
+#RUN sudo chmod +x /entrypoint.sh
+#RUN sudo chmod +x /run_app.sh
 #ENTRYPOINT ["/entrypoint.sh"]
 
 # Sensible defaults
